@@ -32,3 +32,8 @@ export interface BandInputDTO {
   responsible: string;
   accessToken: string;
 }
+
+export interface BandDetailDTO {
+  name: string;
+  id: string;
+}

@@ -1,4 +1,4 @@
-import { BandInputDTO } from "../model/Band";
+import { BandDetailDTO, BandInputDTO } from "../model/Band";
 import { BandDatabase } from "../data/BandDatabase";
 import { IdGenerator } from "../services/IdGenerator";
 import { Authenticator } from "../services/Authenticator";
@@ -7,7 +7,7 @@ import { UserRole } from "../model/User";
 
 export class BandBusiness {
   constructor(
-    private BandDatabase: BandDatabase,
+    private bandDatabase: BandDatabase,
     private idGenerator: IdGenerator,
     private authenticator: Authenticator
   ) {}
@@ -27,13 +27,13 @@ export class BandBusiness {
       );
     }
 
-    const BandExists = await this.BandDatabase.getBandByParam(band.name);
+    const BandExists = await this.bandDatabase.getBandByParam(band.name);
     if (BandExists.getId()) {
       throw new BaseError("Band already exists", 401);
     }
     const id = this.idGenerator.generate();
 
-    await this.BandDatabase.createBand(
+    await this.bandDatabase.createBand(
       id,
       band.name,
       band.musicGenre,
@@ -41,25 +41,24 @@ export class BandBusiness {
     );
   }
 
-  // async getBandByEmail(band: BandInputDTO) {
-  //   if (!band.email || !band.password) {
-  //     throw new Error("Invalid e-mail or password");
-  //   }
-  //   const BandFromDB = await this.BandDatabase.getBandByEmail(Band.email);
+  async getBandByParam(band: BandDetailDTO) {
+    if (!band.id && !band.name) {
+      throw new Error("Please provide id or band name");
+    }
 
-  //   const hashCompare = await this.hashManager.compare(
-  //     Band.password,
-  //     BandFromDB.getPassword()
-  //   );
+    let param = "";
+    if (band.id) {
+      param = band.id;
+    } else {
+      param = band.name;
+    }
 
-  //   if (!hashCompare) {
-  //     throw new Error("Invalid e-mail or password");
-  //   }
-  //   const accessToken = this.authenticator.generateToken({
-  //     id: BandFromDB.getId(),
-  //     role: BandFromDB.getRole(),
-  //   });
+    const bandFromDB = await this.bandDatabase.getBandByParam(param);
 
-  //   return accessToken;
-  // }
+    if (!bandFromDB.getId()) {
+      throw new BaseError("Band not found", 404);
+    }
+
+    return bandFromDB;
+  }
 }

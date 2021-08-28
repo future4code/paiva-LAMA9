@@ -14,5 +14,5 @@ const authenticator = new Authenticator();
 const bandBusiness = new BandBusiness(bandDatabase, idGenerator, authenticator);
 const bandController = new BandController(bandBusiness);
 
-bandRouter.post("/create", bandController.createBand);
-// bandRouter.post("/login", bandController.login);
+bandRouter.post("/create", bandController.create);
+bandRouter.get("/", bandController.getDetail);
