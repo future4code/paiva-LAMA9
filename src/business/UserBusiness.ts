@@ -4,6 +4,7 @@ import { IdGenerator } from "../services/IdGenerator";
 import { HashManager } from "../services/HashManager";
 import { Authenticator } from "../services/Authenticator";
 import { BaseError } from "../error/BaseError";
+import { EMAIL_REGEX } from "../model/constants";
 
 export class UserBusiness {
   constructor(
