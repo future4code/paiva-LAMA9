@@ -14,7 +14,7 @@ export class UserBusiness {
   ) {}
 
   async createUser(user: UserInputDTO) {
-    const emailValidation = EMAIL_REGEX.test(user.email)
+    const emailValidation = EMAIL_REGEX.test(user.email);
     if (
       !user.name ||
       !user.password ||
@@ -51,24 +51,23 @@ export class UserBusiness {
   }
 
   async getUserByEmail(user: LoginInputDTO) {
-    const userDatabase = new UserDatabase();
-    const userFromDB = await userDatabase.getUserByEmail(user.email);
+    if (!user.email || !user.password) {
+      throw new Error("Invalid e-mail or password");
+    }
+    const userFromDB = await this.userDatabase.getUserByEmail(user.email);
 
-    const hashManager = new HashManager();
-    const hashCompare = await hashManager.compare(
+    const hashCompare = await this.hashManager.compare(
       user.password,
       userFromDB.getPassword()
     );
 
-    const authenticator = new Authenticator();
-    const accessToken = authenticator.generateToken({
+    if (!hashCompare) {
+      throw new Error("Invalid e-mail or password");
+    }
+    const accessToken = this.authenticator.generateToken({
       id: userFromDB.getId(),
       role: userFromDB.getRole(),
     });
-
-    if (!hashCompare) {
-      throw new Error("Invalid Password!");
-    }
 
     return accessToken;
   }

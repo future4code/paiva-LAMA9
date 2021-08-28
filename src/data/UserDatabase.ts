@@ -2,8 +2,7 @@ import { BaseDatabase } from "./BaseDatabase";
 import { User } from "../model/User";
 
 export class UserDatabase extends BaseDatabase {
-
-  private static TABLE_NAME = "";
+  private static TABLE_NAME = "NOME_TABELAS_USUÁRIOS";
 
   public async createUser(
     id: string,
@@ -19,7 +18,7 @@ export class UserDatabase extends BaseDatabase {
           email,
           name,
           password,
-          role
+          role,
         })
         .into(UserDatabase.TABLE_NAME);
     } catch (error) {
@@ -35,5 +34,4 @@ export class UserDatabase extends BaseDatabase {
 
     return User.toUserModel(result[0]);
   }
-
 }

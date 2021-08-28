@@ -40,7 +40,11 @@ export class UserController {
 
       res.status(200).send({ token });
     } catch (error) {
-      res.status(400).send({ error: error.message });
+            if (error.code) {
+              res.status(error.code).send({ message: error.message });
+            } else {
+              res.status(400).send({ message: error.message });
+            }
     }
 
     await BaseDatabase.destroyConnection();
