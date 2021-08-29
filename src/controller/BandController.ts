@@ -14,7 +14,7 @@ export class BandController {
         accessToken: req.headers.authorization as string,
       };
 
-      await this.bandBusiness.createBand(input);
+      await this.bandBusiness.create(input);
 
       res.status(201).end();
     } catch (error) {
@@ -39,11 +39,11 @@ export class BandController {
 
       res.status(200).send({ bandDetails });
     } catch (error) {
-            if (error.code) {
-              res.status(error.code).send({ message: error.message });
-            } else {
-              res.status(400).send({ message: error.message });
-            }
+      if (error.code) {
+        res.status(error.code).send({ message: error.message });
+      } else {
+        res.status(400).send({ message: error.message });
+      }
     }
 
     await BaseDatabase.destroyConnection();

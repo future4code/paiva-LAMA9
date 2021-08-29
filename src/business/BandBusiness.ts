@@ -12,7 +12,7 @@ export class BandBusiness {
     private authenticator: Authenticator
   ) {}
 
-  async createBand(band: BandInputDTO) {
+  async create(band: BandInputDTO) {
     const token = this.authenticator.getData(band.accessToken);
     if (token.role !== UserRole.ADMIN) {
       throw new BaseError(
@@ -27,8 +27,8 @@ export class BandBusiness {
       );
     }
 
-    const BandExists = await this.bandDatabase.getBandByParam(band.name);
-    if (BandExists.getId()) {
+    const bandExists = await this.bandDatabase.getBandByParam(band.name);
+    if (bandExists.getId()) {
       throw new BaseError("Band already exists", 401);
     }
     const id = this.idGenerator.generate();
