@@ -14,5 +14,5 @@ const authenticator = new Authenticator();
 const showBusiness = new ShowBusiness(showDatabase, idGenerator, authenticator);
 const showController = new ShowController(showBusiness);
 
+showRouter.get("/:weekDay", showController.getShows);
 showRouter.post("/create", showController.create);
-// showRouter.post("/search", showController.search;

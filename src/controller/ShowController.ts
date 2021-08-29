@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ShowBusiness } from "../business/ShowBusiness";
 import { BaseDatabase } from "../data/BaseDatabase";
-import { ShowInputDTO } from "../model/Show";
+import { Show, ShowDetailDTO, ShowInputDTO } from "../model/Show";
 
 export class ShowController {
   constructor(private showBusiness: ShowBusiness) {}
@@ -29,24 +29,23 @@ export class ShowController {
     await BaseDatabase.destroyConnection();
   }
 
-//   async getDetail(req: Request, res: Response) {
-//     try {
-//       const detailData: BandDetailDTO = {
-//         id: req.query.id as string,
-//         name: req.query.name as string,
-//       };
+  async getShows(req: Request, res: Response) {
+    try {
+      const input: ShowDetailDTO = {
+        weekDay: req.params.weekDay as string,
+      };
 
-//       const bandDetails = await this.bandBusiness.getBandByParam(detailData);
+      const bandDetails = await this.showBusiness.getShows(input);
 
-//       res.status(200).send({ bandDetails });
-//     } catch (error) {
-//       if (error.code) {
-//         res.status(error.code).send({ message: error.message });
-//       } else {
-//         res.status(400).send({ message: error.message });
-//       }
-//     }
+      res.status(200).send({ bandDetails });
+    } catch (error) {
+      if (error.code) {
+        res.status(error.code).send({ message: error.message });
+      } else {
+        res.status(400).send({ message: error.message });
+      }
+    }
 
-//     await BaseDatabase.destroyConnection();
-//   }
+    await BaseDatabase.destroyConnection();
+  }
 }

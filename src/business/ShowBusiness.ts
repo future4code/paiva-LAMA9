@@ -2,7 +2,7 @@ import { IdGenerator } from "../services/IdGenerator";
 import { Authenticator } from "../services/Authenticator";
 import { BaseError } from "../error/BaseError";
 import { UserRole } from "../model/User";
-import { Show, ShowDatabaseDTO, ShowInputDTO } from "../model/Show";
+import { DAYS, Show, ShowDatabaseDTO, ShowDetailDTO, ShowInputDTO } from "../model/Show";
 import { ShowDatabase } from "../data/ShowDatabase";
 
 export class ShowBusiness {
@@ -52,24 +52,15 @@ export class ShowBusiness {
     );
   }
 
-  //   async getBandByParam(band: BandDetailDTO) {
-  //     if (!band.id && !band.name) {
-  //       throw new Error("Please provide id or band name");
-  //     }
+  async getShows(input:ShowDetailDTO) {
+   const weekDay = Show.stringToWeekModel(input.weekDay)
 
-  //     let param = "";
-  //     if (band.id) {
-  //       param = band.id;
-  //     } else {
-  //       param = band.name;
-  //     }
-
-  //     const bandFromDB = await this.bandDatabase.getBandByParam(param);
-
-  //     if (!bandFromDB.getId()) {
-  //       throw new BaseError("Band not found", 404);
-  //     }
-
-  //     return bandFromDB;
-  //   }
+    const inputDatabase: ShowDatabaseDTO = {
+      bandId: "",
+      startTime: 8,
+      endTime: 23,
+      weekDay,
+    };
+    return this.showDatabase.getShows(inputDatabase);
+  }
 }
