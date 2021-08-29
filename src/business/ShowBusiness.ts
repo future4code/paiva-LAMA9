@@ -2,7 +2,13 @@ import { IdGenerator } from "../services/IdGenerator";
 import { Authenticator } from "../services/Authenticator";
 import { BaseError } from "../error/BaseError";
 import { UserRole } from "../model/User";
-import { DAYS, Show, ShowDatabaseDTO, ShowDetailDTO, ShowInputDTO } from "../model/Show";
+import {
+  DAYS,
+  Show,
+  ShowDatabaseDTO,
+  ShowDetailDTO,
+  ShowInputDTO,
+} from "../model/Show";
 import { ShowDatabase } from "../data/ShowDatabase";
 
 export class ShowBusiness {
@@ -24,6 +30,11 @@ export class ShowBusiness {
     if (!show.bandId || !show.startTime || !show.endTime || show.weekDay) {
       throw new Error(
         "BandId, startTime, endTime and weekDay must be provided to register a new show"
+      );
+    }
+    if (Number(show.startTime) < 8 || Number(show.endTime) > 23) {
+      throw new Error(
+        "The event must be registered between 8h and 23h, using only integer numbers"
       );
     }
     const inputData: ShowDatabaseDTO = {
@@ -52,8 +63,8 @@ export class ShowBusiness {
     );
   }
 
-  async getShows(input:ShowDetailDTO) {
-   const weekDay = Show.stringToWeekModel(input.weekDay)
+  async getShows(input: ShowDetailDTO) {
+    const weekDay = Show.stringToWeekModel(input.weekDay);
 
     const inputDatabase: ShowDatabaseDTO = {
       bandId: "",
