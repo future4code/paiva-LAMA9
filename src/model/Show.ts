@@ -43,7 +43,7 @@ export class Show {
       case "sunday":
         return DAYS.sunday;
       default:
-        throw new Error("Invalid weekDay");
+        throw new Error("Please provide one valid day of the event");
     }
   }
 }
@@ -66,4 +66,8 @@ export interface ShowDatabaseDTO {
   bandId: string;
   startTime: number;
   endTime: number;
+}
+
+export interface ShowDetailDTO {
+  weekDay: string;
 }

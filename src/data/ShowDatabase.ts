@@ -33,7 +33,7 @@ export class ShowDatabase extends BaseDatabase {
       .where({ week_day: input.weekDay })
       .andWhere("start_time", "<=", input.endTime)
       .andWhere("end_time", ">=", input.startTime)
-      .orderBy("start_time");
+      .orderBy("start_time", "asc");
 
     return result.map((show) => {
       return Show.toShowModel(show);
