@@ -16,10 +16,11 @@ export class UserBusiness {
 
   async createUser(user: UserInputDTO) {
     const emailValidation = EMAIL_REGEX.test(user.email);
+
     if (
       !user.name ||
       !user.password ||
-      emailValidation ||
+      !emailValidation ||
       user.role !== ("ADMIN" || "NORMAL")
     ) {
       throw new Error(
