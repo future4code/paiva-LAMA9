@@ -4,8 +4,9 @@
   "description": "Template para o projeto LAMA",
   "main": "index.js",
   "scripts": {
+    "start": "ts-node ./src/index.ts",
     "test": "jest",
-    "start": "ts-node ./src/index.ts"
+    "build": "tsc"
   },
   "keywords": [
     "api",

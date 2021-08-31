@@ -43,7 +43,7 @@ describe("signup test", () => {
       name: "wrong",
       email: "email@gmail.com",
       password: "123toostronk",
-      role: "Master",
+      role: "MASTER",
     } as UserInputDTO;
 
     try {

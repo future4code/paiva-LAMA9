@@ -16,24 +16,23 @@ export class UserBusiness {
 
   async createUser(user: UserInputDTO) {
     const emailValidation = EMAIL_REGEX.test(user.email);
-
     if (
       !user.name ||
       !user.password ||
       !emailValidation ||
-      user.role !== ("ADMIN" || "NORMAL")
+      user.role !== ("ADMIN" && "NORMAL")
     ) {
       throw new Error(
         "Name, password, a valid e-mail and role  must be provided to signup"
       );
     }
-
+    console.log("aqui")
     const userExists = await this.userDatabase.getUserByEmail(user.email);
     if (userExists.getId()) {
       throw new BaseError("User already exists", 401);
     }
     const id = this.idGenerator.generate();
-
+    console.log(id);
     const hashPassword = await this.hashManager.hash(user.password);
 
     await this.userDatabase.createUser(
