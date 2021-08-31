@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { UserInputDTO, LoginInputDTO } from "../model/User";
 import { UserBusiness } from "../business/UserBusiness";
 import { BaseDatabase } from "../data/BaseDatabase";
-import { BaseError } from "../error/BaseError";
 
 export class UserController {
   constructor(private userBusiness: UserBusiness) {}
@@ -40,11 +39,11 @@ export class UserController {
 
       res.status(200).send({ token });
     } catch (error) {
-            if (error.code) {
-              res.status(error.code).send({ message: error.message });
-            } else {
-              res.status(400).send({ message: error.message });
-            }
+      if (error.code) {
+        res.status(error.code).send({ message: error.message });
+      } else {
+        res.status(400).send({ message: error.message });
+      }
     }
 
     await BaseDatabase.destroyConnection();
